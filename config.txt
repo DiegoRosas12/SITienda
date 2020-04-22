@@ -1,0 +1,4 @@
+user:ma 
+password:250223M@rianita
+host:localhost
+database:store_db
