@@ -2,110 +2,30 @@ from mysql import connector
 
 class Model:
     def __init__(self,config_db_file = 'config.txt'):
-        self.config_db_file = config_db_file
-        self.config_db = self.read_config_db()
-        self.connect_to_db()
+        self.__config_db_file = config_db_file
+        self.__config_db = self.__read_config_db()
+        self.__connect_to_db()
     
-    def read_config_db(self):
+    def __read_config_db(self):
         d ={}
 
-        with open(self.config_db_file) as f_r:
+        with open(self.__config_db_file) as f_r:
             for line in f_r:
                 (key, val) = line.strip().split(':')
                 d[key] = val
         return d
 
-    def connect_to_db(self):
-        self.cnx = connector.connect(**self.config_db)
-        self.cursor = self.cnx.cursor()
+    def __connect_to_db(self):
+        self._cnx = connector.connect(**self.__config_db)
+        self._cursor = self._cnx.cursor()
 
-    def close_db(self):
-        self.cnx.close() 
+    def __close_db(self):
+        self._cnx.close() 
 
     """
     metodos de clientes
-    """                   
-    def create_cliente(self, Nombre, Apellido,Correo, Tel, Direccion):
-        try:
-            sql = 'INSERT INTO Clientes(Nombre,Apellido,Correo,Tel,Direccion) VALUES(%s, %s,%s,%s,%s)'
-            values = (Nombre,Apellido, Correo, Tel,Direccion)
+    """                    
 
-            self.cursor.execute(sql, values)
-            self.cnx.commit()
-
-            return True
-        except connector.Error as err:
-            self.cnx.rollback()
-            return(err)   
-
-    def read_cliente(self, id):
-        try:
-            sql = 'SELECT * FROM Clientes WHERE id_Cliente = %s'
-            values = (id,)
-            self.cursor.execute(sql, values)
-            cliente = self.cursor.fetchone()
-
-            return cliente
-        except connector.Error as err:
-            return (err)  
-
-    def read_all_clientes(self):
-        try:
-            sql = 'SELECT * FROM Clientes'
-            self.cursor.execute(sql)
-            cliente = self.cursor.fetchall()
-
-            return cliente
-        except connector.Error as err:
-            return (err)  
-
-    def update_cliente(self, id, Nombre = '', Apellido = '', Correo = '', Tel = '', Direccion = ''):
-        fields = []
-        val = []
-
-        if Nombre !='':
-            val.append(Nombre)
-            fields.append('Nombre = %s')
-        if Apellido !='':
-            val.append(Apellido)
-            fields.append('Apellido = %s')
-        if Correo != '':
-            val.append(Correo)
-            fields.append('Correo = %s')
-        if Tel != '':
-            val.append(Tel)
-            fields.append('Tel = %s')
-        if Direccion != '':
-            val.append(Direccion)
-            fields.append('Direccion = %s') 
-
-        val.append(id)
-        val = tuple(val)         
-        try:
-            sql = 'UPDATE Clientes SET ' + ','.join(fields) +' WHERE id_Cliente =%s'
-
-            self.cursor.execute(sql,val)
-            self.cnx.commit()
-
-            return True
-
-
-        except connector.Error as err:
-            self.cnx.rollback()
-            return(err)
-
-    def delete_cliente(self, id):
-        try:
-            sql = 'DELETE  FROM Clientes WHERE id_Cliente = %s'
-            values = (id,)
-
-            self.cursor.execute(sql, values)
-            self.cnx.commit()
-
-            return True
-        except connector.Error as err:
-            self.cnx.rollback()
-            return (err)  
 
     def create_producto(self, id_barcode, Nombre, Detalles, Cantidad, Precio):
         try:
