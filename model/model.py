@@ -22,9 +22,7 @@ class Model:
     def __close_db(self):
         self._cnx.close() 
 
-    """
-    metodos de clientes
-    """                    
+                   
 
 
     def create_producto(self, id_barcode, Nombre, Detalles, Cantidad, Precio):

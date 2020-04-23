@@ -1,7 +1,7 @@
 from .model import Model
 from mysql import connector
 
-class clienteModel(Model):
+class ClienteModel(Model):
     def create(self, nombre, apellido_p,apellido_m, correo,tel):
         try:
             sql = 'INSERT INTO clientes(nombre, apellido_p,apellido_m, correo,tel) VALUES(%s, %s,%s,%s,%s)'

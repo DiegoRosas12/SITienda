@@ -1,9 +1,10 @@
 
 #con herencia:
 
-from model.clienteModel import clienteModel
+from model.clienteModel import ClienteModel
+from model.direccionModel import DireccionModel
 
-clienteModel = clienteModel()
-clienteModel.create("Mariana","Arce","Aguilar","mariana@hotmail.com",'4641660804')
+direccionModel = DireccionModel()
+direccionModel.delete(1)
 
-print(clienteModel.read_all())
+print(direccionModel.read_all())
