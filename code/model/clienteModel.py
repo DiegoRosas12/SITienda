@@ -26,6 +26,17 @@ class ClienteModel(Model):
         except connector.Error as err:
             return (err) 
 
+    def leer_correo(self, correo):        
+        try:
+            sql = 'SELECT * FROM clientes WHERE correo = %s'
+            values = (correo,)
+            self._cursor.execute(sql, values)
+            cliente = self._cursor.fetchone()
+
+            return cliente
+        except connector.Error as err:
+            return (err)         
+
     def read_all(self):
         try:
             sql = 'SELECT * FROM clientes'
@@ -35,6 +46,7 @@ class ClienteModel(Model):
             return cliente
         except connector.Error as err:
             return (err) 
+
 
     def update(self, id, nombre = '', apellido_p = '', apellido_m = '', correo = '', tel = ''):
         fields = []
@@ -64,8 +76,7 @@ class ClienteModel(Model):
             self._cursor.execute(sql,val)
             self._cnx.commit()
 
-            return True
-
+            return self._cursor.rowcount > 0
 
         except connector.Error as err:
             self._cnx.rollback()
@@ -79,7 +90,7 @@ class ClienteModel(Model):
             self._cursor.execute(sql, values)
             self._cnx.commit()
 
-            return True
+            return self._cursor.rowcount > 0
         except connector.Error as err:
             self._cnx.rollback()
             return (err)                       

@@ -26,6 +26,18 @@ class DireccionModel(Model):
         except connector.Error as err:
             return (err) 
 
+    def leer_direccion_cliente(self, idcliente):
+        try:
+            sql = 'SELECT * FROM direccion WHERE id_cliente = %s'
+            values = (idcliente,)
+            self._cursor.execute(sql, values)
+            direccion = self._cursor.fetchall()
+
+            return direccion
+        except connector.Error as err:
+            return (err) 
+
+
     def read_all(self):
         try:
             sql = 'SELECT * FROM direccion'
@@ -67,7 +79,7 @@ class DireccionModel(Model):
             self._cursor.execute(sql,val)
             self._cnx.commit()
 
-            return True
+            return self._cursor.rowcount >0
 
 
         except connector.Error as err:
@@ -82,7 +94,7 @@ class DireccionModel(Model):
             self._cursor.execute(sql, values)
             self._cnx.commit()
 
-            return True
+            return self._cursor.rowcount >0
         except connector.Error as err:
             self._cnx.rollback()
             return (err)                       
